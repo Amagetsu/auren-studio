@@ -19,6 +19,13 @@
 @media (max-width: 520px) { :root { --container:min(100% - 32px,420px); }.site-header { padding:18px 16px; }.hero { padding-top:130px; }.hero-actions { align-items:flex-start; flex-direction:column; gap:18px; }.trust-line { margin-top:45px; line-height:1.7; }.hero-visual { min-height:400px; }.browser-card { top:35px; right:1%; width:88%; }.browser-title { margin-top:62px; font-size:36px; }.float-card { width:180px; padding:12px; }.float-card-top { top:10%; left:-2%; }.float-card-bottom { bottom:4%; right:-4%; width:205px; }.orbit-one { inset:40px -30px 10px 15px; }.project-preview { min-height:300px; padding:20px 9px; }.project-art { height:250px; padding:22px; }.project-art strong { margin-top:40px; font-size:31px; }.art-circle { width:170px; height:170px; font-size:80px; }.art-tag { left:22px; bottom:20px; }.project-info { padding:30px 22px; }.service-grid { grid-template-columns:1fr; }.service-card { min-height:220px; }.advantage-layout { gap:45px; }.advantage-item { grid-template-columns:32px 1fr 15px; gap:10px; }.footer-grid { grid-template-columns:1fr 1fr; gap:28px 18px; }.footer-bottom { align-items:flex-start; flex-direction:column; gap:8px; } }
 @media (prefers-reduced-motion: reduce) { *,*::before,*::after { scroll-behavior:auto!important; animation-duration:.01ms!important; animation-iteration-count:1!important; transition-duration:.01ms!important; } .reveal { opacity:1; transform:none; } }
 
+.contact-direct { display:grid; gap:8px; margin-top:28px; }
+.contact-direct a { color:var(--navy-900); font-size:14px; font-weight:600; }
+.contact-telegram { display:inline-flex!important; width:max-content; margin-top:14px; gap:10px; padding:13px 17px; color:var(--cream)!important; font-size:12px!important; }
+.contact-telegram:hover { background:var(--navy-900); }
+.telegram-icon { width:17px; height:17px; fill:#67c7e8; flex:0 0 auto; }
+.contact-telegram > span:not(.telegram-icon) { color:var(--cream); }
+
 /* Hero refinement: the project is now the visual anchor, while the existing system stays intact. */
 .hero { min-height:88vh; padding:104px 0 16px; }
 .hero-grid { gap:clamp(56px,8vw,125px); }
