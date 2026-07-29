@@ -25,6 +25,10 @@
 .contact-telegram:hover { background:var(--navy-900); }
 .telegram-icon { width:17px; height:17px; fill:#67c7e8; flex:0 0 auto; }
 .contact-telegram > span:not(.telegram-icon) { color:var(--cream); }
+.project-preview-link { color:inherit; }
+.project-title-link { color:inherit; }
+.project-demo-label { color:var(--warm); }
+.project-disclaimer { margin-top:-8px; color:#758294!important; font-size:12px!important; }
 
 /* Hero refinement: the project is now the visual anchor, while the existing system stays intact. */
 .hero { min-height:88vh; padding:104px 0 16px; }

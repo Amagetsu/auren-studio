@@ -19,11 +19,14 @@ export const studioConfig = {
 
 export const projects = [
   {
-    name: 'Klaro Kassel',
+    name: 'Klaro Reinigung',
     categoryKey: 'projects.klaroCategory',
     statusKey: 'projects.concept',
     descriptionKey: 'projects.klaroDescription',
+    description: 'Modern demo website created to showcase a premium cleaning company website concept.',
+    demoLabel: 'Demo Project',
+    demoDisclaimer: 'Portfolio demonstration — not a real client website.',
     tasks: ['Webdesign', 'Entwicklung', 'Responsive'],
-    href: '#contact',
+    href: 'https://cleaner-gules.vercel.app',
   },
 ];

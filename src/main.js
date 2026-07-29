@@ -6,6 +6,7 @@ const languages = ['de', 'en', 'ru'];
 let currentLanguage = localStorage.getItem('auren-language') || 'de';
 if (!languages.includes(currentLanguage)) currentLanguage = 'de';
 let activeFaq = 0;
+let menuIsOpen = false;
 
 const get = (path) => path.split('.').reduce((value, key) => value?.[key], translations[currentLanguage]);
 const esc = (value = '') => String(value).replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[char]));
@@ -22,7 +23,7 @@ function header() {
 
 function hero() { const h = get('hero'); const p = get('projects'); return `<section class="hero" id="top"><div class="hero-grid container"><div class="hero-copy"><p class="eyebrow">${h.eyebrow}</p><h1>${h.title}</h1><p class="hero-text">${h.text}</p><div class="hero-actions"><a class="button button-primary" href="#contact-form">${h.primary} ${icon('arrow')}</a><a class="text-link" href="#projects">${h.secondary} ${icon('arrow')}</a></div><p class="trust-line">${h.trust}</p></div><div class="hero-visual" aria-label="${h.browserLabel}" data-parallax-root><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="case-study-card" data-parallax="0.35"><div class="case-study-top"><span>${p.concept}</span><span>01 / 01</span></div><div class="case-study-art"><span class="art-kicker">Klaro</span><strong>Sauberkeit,<br /><em>die bleibt.</em></strong><div class="art-circle">K</div><span class="art-tag">Reinigung · Kassel</span></div><div class="case-study-footer"><strong>Klaro Kassel</strong><span>${h.cardLabel}</span></div></div><div class="float-card float-card-top" data-parallax="-0.25"><span>01</span><strong>Klaro Kassel</strong><small>${p.concept}</small></div><div class="float-card float-card-bottom" data-parallax="0.18"><span class="mini-mark">A</span><strong>${h.cardLabel}</strong><small>${h.localLabel}</small></div></div></div><div class="hero-bottom container"><span>${h.scroll}</span><span class="line"></span><span>01 / 06</span></div></section>`; }
 
-function projectsSection() { const p = get('projects'); const project = projects[0]; return `<section class="section projects-section" id="projects"><div class="container"><div class="section-heading reveal"><div><p class="eyebrow">${p.eyebrow}</p><h2>${p.title}</h2></div><p>${p.intro}</p></div><article class="project-feature reveal"><div class="project-preview"><div class="project-window"><div class="window-top"><span>klaro-kassel.de</span><span>↗</span></div><div class="project-art"><span class="art-kicker">Klaro</span><strong>Sauberkeit,<br /><em>die bleibt.</em></strong><div class="art-circle">K</div><span class="art-tag">Reinigung · Kassel</span></div></div></div><div class="project-info"><div class="project-meta"><span>${p.concept}</span><span>2024</span></div><h3>${esc(project.name)}</h3><p class="project-category">${p.klaroCategory}</p><p>${p.klaroDescription}</p><div class="task-list"><span>${p.tasks}</span>${project.tasks.map((task) => `<b>${icon('check')} ${task}</b>`).join('')}</div><a class="button button-outline" href="${project.href}">${p.view} ${icon('arrow')}</a></div></article><div class="next-project reveal"><span class="next-number">02</span><div><p class="eyebrow">${p.next}</p><p>${p.nextText}</p></div><span class="next-dash">—</span></div></div></section>`; }
+function projectsSection() { const p = get('projects'); const project = projects[0]; const projectLink = `href="${esc(project.href)}" target="_blank" rel="noopener noreferrer"`; return `<section class="section projects-section" id="projects"><div class="container"><div class="section-heading reveal"><div><p class="eyebrow">${p.eyebrow}</p><h2>${p.title}</h2></div><p>${p.intro}</p></div><article class="project-feature reveal"><a class="project-preview project-preview-link" ${projectLink} aria-label="${esc(project.name)} — ${esc(project.demoLabel)}"><div class="project-window"><div class="window-top"><span>cleaner-gules.vercel.app</span><span>↗</span></div><div class="project-art"><span class="art-kicker">Klaro</span><strong>Sauberkeit,<br /><em>die bleibt.</em></strong><div class="art-circle">K</div><span class="art-tag">Reinigung · Kassel</span></div></div></a><div class="project-info"><div class="project-meta"><span class="project-demo-label">${esc(project.demoLabel)}</span><span>2024</span></div><h3><a class="project-title-link" ${projectLink}>${esc(project.name)}</a></h3><p class="project-category">${p.klaroCategory}</p><p>${esc(project.description)}</p><p class="project-disclaimer">${esc(project.demoDisclaimer)}</p><div class="task-list"><span>${p.tasks}</span>${project.tasks.map((task) => `<b>${icon('check')} ${task}</b>`).join('')}</div><a class="button button-outline" ${projectLink}>${p.view} ${icon('arrow')}</a></div></article><div class="next-project reveal"><span class="next-number">02</span><div><p class="eyebrow">${p.next}</p><p>${p.nextText}</p></div><span class="next-dash">—</span></div></div></section>`; }
 
 function servicesSection() { const s = get('services'); const primary = s.items.slice(0, 3); const secondary = s.items.slice(3); return `<section class="section cream-section" id="services"><div class="container"><div class="section-heading reveal"><div><p class="eyebrow">${s.eyebrow}</p><h2>${s.title}</h2></div><p>${s.intro}</p></div><div class="service-grid primary-services">${primary.map((item, i) => `<article class="service-card reveal" style="--delay:${i * 60}ms"><span class="card-index">0${i + 1}</span><h3>${item.title}</h3><p>${item.text}</p><span class="card-arrow">↗</span></article>`).join('')}</div><div class="secondary-services reveal"><span class="secondary-label">${s.secondaryLabel}</span>${secondary.map((item) => `<span class="secondary-service"><b>${item.title}</b><small>${item.text}</small></span>`).join('')}</div></div></section>`; }
 
@@ -41,15 +42,46 @@ function footer() { const f = get('footer'); const n = get('navigation'); return
 let revealObserver;
 
 function observeReveals() { if (!revealObserver) revealObserver = new IntersectionObserver((entries) => entries.forEach((entry) => { if (entry.isIntersecting) { entry.target.classList.add('is-visible'); revealObserver.unobserve(entry.target); } }), { threshold: 0.12 }); document.querySelectorAll('.reveal:not(.is-visible)').forEach((element) => revealObserver.observe(element)); }
-function render() { document.documentElement.lang = currentLanguage; document.title = currentLanguage === 'de' ? 'AUREN Studio – Webdesign & Entwicklung für lokale Unternehmen' : currentLanguage === 'en' ? 'AUREN Studio – Web design & development for local businesses' : 'AUREN Studio — веб-дизайн и разработка для локального бизнеса'; document.querySelector('#app').innerHTML = `${header()}${hero()}${projectsSection()}${servicesSection()}${advantagesSection()}${processSection()}${aboutSection()}${faqSection()}${contactSection()}${footer()}`; bindInteractions(); observeReveals(); }
+
+function setMenuOpen(open, { focus = false } = {}) {
+  const menuButton = document.querySelector('.menu-toggle');
+  const nav = document.querySelector('.main-nav');
+  menuIsOpen = Boolean(open);
+  nav?.classList.toggle('open', menuIsOpen);
+  menuButton?.classList.toggle('is-open', menuIsOpen);
+  menuButton?.setAttribute('aria-expanded', String(menuIsOpen));
+  document.body.classList.toggle('menu-open', menuIsOpen);
+  if (!menuIsOpen && focus && menuButton) menuButton.focus({ preventScroll: true });
+}
+
+function closeMenu(options = {}) { setMenuOpen(false, options); }
+
+function render() {
+  closeMenu({ focus: false });
+  document.documentElement.lang = currentLanguage;
+  document.title = currentLanguage === 'de' ? 'AUREN Studio – Webdesign & Entwicklung für lokale Unternehmen' : currentLanguage === 'en' ? 'AUREN Studio – Web design & development for local businesses' : 'AUREN Studio — веб-дизайн и разработка для локального бизнеса';
+  document.querySelector('#app').innerHTML = `${header()}${hero()}${projectsSection()}${servicesSection()}${advantagesSection()}${processSection()}${aboutSection()}${faqSection()}${contactSection()}${footer()}`;
+  bindInteractions();
+  observeReveals();
+}
 
 function bindInteractions() {
-  document.querySelectorAll('[data-lang]').forEach((button) => button.addEventListener('click', () => { const preservedScroll = window.scrollY; currentLanguage = button.dataset.lang; localStorage.setItem('auren-language', currentLanguage); activeFaq = 0; render(); requestAnimationFrame(() => window.scrollTo({ top: preservedScroll, behavior: 'auto' })); }));
-  const menuButton = document.querySelector('.menu-toggle'); const nav = document.querySelector('.main-nav');
-  const closeMenu = () => { nav.classList.remove('open'); menuButton.setAttribute('aria-expanded', 'false'); document.body.classList.remove('menu-open'); menuButton.focus(); };
-  menuButton.addEventListener('click', () => { const open = !nav.classList.contains('open'); nav.classList.toggle('open', open); menuButton.setAttribute('aria-expanded', String(open)); document.body.classList.toggle('menu-open', open); if (!open) menuButton.focus(); });
-  nav.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => { if (nav.classList.contains('open')) closeMenu(); }));
-  nav.addEventListener('keydown', (event) => { if (event.key === 'Escape' && nav.classList.contains('open')) closeMenu(); });
+  document.querySelectorAll('[data-lang]').forEach((button) => button.addEventListener('click', () => {
+    const preservedScroll = window.scrollY;
+    closeMenu({ focus: false });
+    currentLanguage = button.dataset.lang;
+    localStorage.setItem('auren-language', currentLanguage);
+    activeFaq = 0;
+    render();
+    requestAnimationFrame(() => window.scrollTo({ top: preservedScroll, behavior: 'auto' }));
+  }));
+  const menuButton = document.querySelector('.menu-toggle');
+  const nav = document.querySelector('.main-nav');
+  menuButton?.addEventListener('click', () => setMenuOpen(!menuIsOpen));
+  nav?.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => {
+    if (menuIsOpen) closeMenu({ focus: false });
+  }));
+  nav?.addEventListener('keydown', (event) => { if (event.key === 'Escape' && menuIsOpen) closeMenu({ focus: true }); });
   document.querySelectorAll('a[href^="#"]').forEach((link) => link.addEventListener('click', (event) => { const selector = link.getAttribute('href'); const target = selector && document.querySelector(selector); if (!target) return; event.preventDefault(); const headerHeight = document.querySelector('#site-header')?.offsetHeight || 0; const top = target.getBoundingClientRect().top + window.scrollY - headerHeight - 18; smoothScrollTo(Math.max(0, top)); history.replaceState(null, '', selector); if (nav.classList.contains('open')) closeMenu(); }));
   document.querySelectorAll('[data-faq]').forEach((button) => button.addEventListener('click', () => { const next = Number(button.dataset.faq); const beforeTop = button.getBoundingClientRect().top; activeFaq = activeFaq === next ? -1 : next; document.querySelectorAll('.faq-item').forEach((item, index) => { const itemButton = item.querySelector('[data-faq]'); const answer = item.querySelector('.faq-answer'); const isOpen = index === activeFaq; item.classList.toggle('open', isOpen); itemButton.setAttribute('aria-expanded', String(isOpen)); itemButton.querySelector('b').textContent = isOpen ? '−' : '+'; answer.hidden = !isOpen; }); requestAnimationFrame(() => { window.scrollBy({ top: button.getBoundingClientRect().top - beforeTop, behavior: 'auto' }); button.focus({ preventScroll: true }); }); }));
   const form = document.querySelector('#contact-form'); form.addEventListener('submit', handleSubmit);
@@ -63,3 +95,7 @@ if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
 if (!window.location.hash) window.scrollTo({ top: 0, behavior: 'auto' });
 render();
 window.addEventListener('scroll', () => document.querySelector('#site-header')?.classList.toggle('scrolled', window.scrollY > 24), { passive: true });
+const mobileViewport = window.matchMedia('(max-width: 900px)');
+const handleViewportChange = (event) => { if (!event.matches) closeMenu({ focus: false }); };
+if (mobileViewport.addEventListener) mobileViewport.addEventListener('change', handleViewportChange);
+else mobileViewport.addListener(handleViewportChange);
