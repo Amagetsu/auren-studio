@@ -40,6 +40,6 @@ export const projects = [
     demoLabel: 'Live website',
     demoDisclaimer: 'Independent portfolio project — built for a personal florist.',
     tasks: ['Webdesign', 'Entwicklung', 'Mobile first'],
-    href: 'https://flowers-2zwt.vercel.app',
+    href: 'https://flowers-alpha-one.vercel.app',
   },
 ];
