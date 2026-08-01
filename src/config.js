@@ -19,6 +19,7 @@ export const studioConfig = {
 
 export const projects = [
   {
+    id: 'klaro',
     name: 'Klaro Reinigung',
     categoryKey: 'projects.klaroCategory',
     statusKey: 'projects.concept',
@@ -28,5 +29,17 @@ export const projects = [
     demoDisclaimer: 'Portfolio demonstration — not a real client website.',
     tasks: ['Webdesign', 'Entwicklung', 'Responsive'],
     href: 'https://cleaner-gules.vercel.app',
+  },
+  {
+    id: 'flowers',
+    name: 'With Love Flowers',
+    categoryKey: 'projects.flowersCategory',
+    statusKey: 'projects.flowersConcept',
+    descriptionKey: 'projects.flowersDescription',
+    description: 'A warm, editorial website for a personal florist with bouquets, flower subscriptions and direct enquiries.',
+    demoLabel: 'Live website',
+    demoDisclaimer: 'Independent portfolio project — built for a personal florist.',
+    tasks: ['Webdesign', 'Entwicklung', 'Mobile first'],
+    href: 'https://flowers-2zwt.vercel.app',
   },
 ];
